@@ -24,5 +24,3 @@ runs:
     - name: Run badge update script
       run: python3 ./badges_repo/github_badges/update_badges.py
       shell: bash
-      env:
-        BADGE_LIST: ${{ inputs.badge-list }}
