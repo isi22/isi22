@@ -22,7 +22,7 @@ runs:
         python-version: '3.x'
 
     - name: Run badge update script
-      run: python3 ./badges_repo/github_badgesupdate_badges.py
+      run: python3 ./badges_repo/github_badges/update_badges.py
       shell: bash
       env:
         BADGE_LIST: ${{ inputs.badge-list }}
