@@ -2,7 +2,9 @@ import json
 import re
 import os
 
-BADGES_FILE = "./badges_repo/badges.json"  # New path to the central badges file
+BADGES_FILE = (
+    "./badges_repo/github_badges/badges.json"  # New path to the central badges file
+)
 README_FILE = "README.md"
 
 
