@@ -50,7 +50,7 @@ def generate_badges_html(badge_keys: List[str]) -> str:
         if badge_data and "badge_url" in badge_data:
             alt_text = key.replace("_", " ").replace("-", " ").title()
             html_badges.append(
-                f'<img alt="{alt_text}" src="{badge_data["badge_url"]}" />'
+                f'<img alt="{alt_text}" src="{badge_data["badge_url"]}" />\n'
             )
         else:
             print(
