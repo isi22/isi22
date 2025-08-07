@@ -17,8 +17,7 @@ jobs:
           GH_TOKEN: ${{ secrets.CROSS_REPO_PAT }}
         run: |
           echo "Finding repositories..."
-          REPOS=$(gh repo list --limit 1000 --json nameWithOwner --jq -r '.[].nameWithOwner')
-          
+          REPOS=$(gh repo list --limit 1000 --json nameWithOwner | jq -r '.[].nameWithOwner')
           echo "Building matrix of files to update..."
           MATRIX="{\"include\":["
           FIRST_ENTRY=true
