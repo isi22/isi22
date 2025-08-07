@@ -10,9 +10,9 @@ on:
       file_path:
         required: true
         type: string
-      secrets:
-        cross_repo_pat:
-          required: true
+    secrets:
+      cross_repo_pat:
+        required: true
 
 jobs:
   update-file:
