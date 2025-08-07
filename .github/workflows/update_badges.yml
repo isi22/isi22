@@ -1,8 +1,8 @@
-# .github/workflows/update-badges.yml
-name: Update Badges in File
+name: Reusable Badge Updater
 
+# This trigger makes the workflow "reusable" or "callable"
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       repo_name:
         required: true
@@ -10,40 +10,48 @@ on:
       file_path:
         required: true
         type: string
+    secrets:
+      YOUR_PAT:
+        required: true
 
 jobs:
-  update:
+  update-file:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Target Repo
+      # 1. Check out the target repository that needs its file updated
+      - name: Checkout Target Repo (${{ inputs.repo_name }})
         uses: actions/checkout@v4
         with:
           repository: ${{ inputs.repo_name }}
-          token: ${{ secrets.CROSS_REPO_PAT }} 
+          token: ${{ secrets.YOUR_PAT }}
 
+      # 2. Check out this repository to get access to the Python script
       - name: Checkout Script Repo
         uses: actions/checkout@v4
         with:
-          repository: isi22/isi22 
-          path: ./script-repo
+          path: self # Check it out into a 'self' directory
 
+      # 3. Set up Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
-      - name: Run Badge Update Script
-        run: python ./script-repo/github_badges/update_badges.py ${{ inputs.file_path }}
+      # 4. Run the generalized Python script
+      - name: Run Badge Update Script on ${{ inputs.file_path }}
+        run: python ./self/github_badges/update_badges.py "${{ github.workspace }}/${{ inputs.file_path }}"
+        # NOTE: Make sure your script is named 'badge_updater_script.py'
 
-      # Add steps here to commit and push the changes back to the target repo
+      # 5. Commit and push changes if any were made
       - name: Commit and Push Changes
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git add .
           if git diff --staged --quiet; then
-            echo "No changes to commit."
+            echo "No changes to commit in ${{ inputs.repo_name }}."
           else
-            git commit -m "style: update project badges"
+            git commit -m "style: update project badges for ${{ inputs.file_path }}"
+            echo "Pushing changes to ${{ inputs.repo_name }}..."
             git push
           fi
