@@ -1,25 +1,19 @@
 import json
 import re
+import sys
 from pathlib import Path
 from typing import List
-import sys
-
-# --- Configuration ---
-# Using Path objects is still good practice for handling paths correctly.
-BADGES_FILE = "./self/github_badges/badges.json"  # New path to the central badges file
 
 # --- Markers and Patterns ---
 START_MARKER = "<!--- Start of badges -->"
 END_MARKER = "<!--- End of badges -->"
-
-# [FIX] The regex pattern should not be enclosed in forward slashes (/) in Python.
-# Using a raw string (r"...") is also best practice for regex patterns.
 BADGE_LIST_COMMENT_PATTERN = re.compile(r"<!-- Badges: (.*?) -->")
-
-# Regex to find the entire block to be replaced.
 BADGE_BLOCK_PATTERN = re.compile(
     f"({re.escape(START_MARKER)}.*?{re.escape(END_MARKER)})", re.DOTALL
 )
+# --- Configuration ---
+# Using Path objects is still good practice for handling paths correctly.
+BADGES_FILE = "./self/github_badges/badges.json"  # New path to the central badges file
 
 
 def generate_badges_html(badge_keys: List[str]) -> str:
@@ -31,11 +25,10 @@ def generate_badges_html(badge_keys: List[str]) -> str:
         return ""
 
     try:
-        # Use the standard `with open()` for compatibility.
         with open(BADGES_FILE, "r", encoding="utf-8") as f:
             all_badges = json.load(f)
     except FileNotFoundError:
-        print(f"Error: {BADGES_FILE} not found.")
+        print(f"Error: Badges file not found at {BADGES_FILE}")
         return ""
     except json.JSONDecodeError:
         print(f"Error: Could not decode JSON from {BADGES_FILE}.")
@@ -57,78 +50,77 @@ def generate_badges_html(badge_keys: List[str]) -> str:
     return f'<p align="left">\n{" ".join(html_badges)}</p>' if html_badges else ""
 
 
-def update_file(file_path_str: str):
+def update_file(file_to_update: Path):
     """
-    Reads a specific file, finds the badge keys, generates new badge HTML,
+    Reads a specific file, finds badge keys, generates new HTML,
     and updates the file.
     """
-    target_file = Path(file_path_str)
     try:
-        # Using with open(...) is a robust way to handle file reading.
-        with open(target_file, "r", encoding="utf-8") as f:
-            content = f.read()
+        if not file_to_update.exists():
+            print(f"Error: Target file not found: {file_to_update}")
+            return
 
+        content = file_to_update.read_text(encoding="utf-8")
         match = BADGE_LIST_COMMENT_PATTERN.search(content)
 
         if not match:
-            # Corrected the error message to show the expected pattern accurately.
-            print("Error: Badge list comment `<!-- Badges: ... -->` not found in File.")
+            print(
+                f"Info: Badge list comment not found in {file_to_update.name}. Skipping."
+            )
             return
 
-        # This line is useful for debugging to see what the regex matched.
-        print(f"Found badge comment: {match.group(0)}")
+        print(f"Found badge comment in {file_to_update.name}")
 
-        badge_comment_line = match.group(0)  # The full comment <!-- Badges: ... -->
-        badge_list_str = match.group(1).strip()  # The content of the capturing group
+        badge_comment_line = match.group(0)
+        badge_list_str = match.group(1).strip()
         badge_keys = [key.strip() for key in badge_list_str.split(",") if key.strip()]
-
-        # [NEW] Sort the badge keys alphabetically.
         badge_keys.sort()
 
         new_badges_html = generate_badges_html(badge_keys)
 
         if not new_badges_html:
-            print("No new badges were generated. File will not be updated.")
+            print(f"No badges generated for {file_to_update.name}. Skipping update.")
             return
 
-        # Construct the new content block that will replace the old one.
         new_block_content = (
             f"{START_MARKER}\n"
             f"{badge_comment_line}\n\n"
-            f"{new_badges_html}\n"
+            f"{new_badges_html}\n\n"
             f"{END_MARKER}"
         )
 
-        # Check if the start/end markers exist to replace the block.
         if BADGE_BLOCK_PATTERN.search(content):
-            updated_file = BADGE_BLOCK_PATTERN.sub(new_block_content, content)
+            updated_content = BADGE_BLOCK_PATTERN.sub(new_block_content, content)
         else:
             print(
-                f"Error: Markers `{START_MARKER}` and `{END_MARKER}` not found in File."
+                f"Error: Markers not found in {file_to_update.name}. Skipping update."
             )
             return
 
-        # Write the updated content back to the file.
-        with open(target_file, "w", encoding="utf-8") as f:
-            f.write(updated_file)
+        if content == updated_content:
+            print(f"No changes needed for {file_to_update.name}. Skipping commit.")
+            return
 
-        print("File updated successfully with new badges.")
+        file_to_update.write_text(updated_content, encoding="utf-8")
+        print(f"{file_to_update.name} updated successfully with new badges.")
 
-    except FileNotFoundError:
-        print(f"Error: {target_file} not found.")
     except Exception as e:
-        # Catch other potential errors, like permissions issues.
-        print(f"An unexpected error occurred: {e}")
+        print(
+            f"An unexpected error occurred while processing {file_to_update.name}: {e}"
+        )
 
 
 def main():
     """Main execution function."""
-    if len(sys.argv) > 1:
-        file_to_update = sys.argv[1]
-        print(f"Attempting to update badges in: {file_to_update}")
-        update_file(file_to_update)
-    else:
-        print("Error: No file path provided.")
+    if len(sys.argv) < 2:
+        print("Error: No file paths provided.")
+        sys.exit(1)
+
+    # Loop through all file paths provided as command-line arguments.
+    for file_path_str in sys.argv[1:]:
+        target_file_path = Path(file_path_str)
+        print(f"--- Processing {target_file_path} ---")
+        update_file(target_file_path)
 
 
 if __name__ == "__main__":

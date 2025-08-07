@@ -7,7 +7,7 @@ on:
       repo_name:
         required: true
         type: string
-      file_path:
+      file_paths:
         required: true
         type: string
     secrets:
@@ -37,23 +37,22 @@ jobs:
         with:
           python-version: '3.10'
 
-      # 4. Run the generalized Python script
-      - name: Run Badge Update Script on ${{ inputs.file_path }}
-        run: python ./self/github_badges/update_badges.py "${{ github.workspace }}/${{ inputs.file_path }}"
-        # NOTE: Make sure your script is named 'badge_updater_script.py'
+      # 4. Run the generalized Python script on all files at once
+      - name: Run Badge Update Script
+        run: python ./self/github_badges/update_badges.py ${{ inputs.file_paths }}
+        # NOTE: The shell will expand the file_paths string into multiple arguments
 
-      # 5. Commit and push changes if any were made
+      # 5. Commit and push all changes together in a single commit
       - name: Commit and Push Changes
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add "${{ inputs.file_path }}"
+          # Add all tracked changes
+          git add -u
           if git diff --staged --quiet; then
             echo "No changes to commit in ${{ inputs.repo_name }}."
           else
-            git commit -m "style: update project badges for ${{ inputs.file_path }}"
-            echo "Pulling latest changes before push..."
-            git pull --rebase
+            git commit -m "style: update project badges"
             echo "Pushing changes to ${{ inputs.repo_name }}..."
             git push
           fi
