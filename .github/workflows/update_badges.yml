@@ -42,10 +42,10 @@ jobs:
         run: python ./self/github_badges/update_badges.py ${{ inputs.file_paths }}
         # NOTE: The shell will expand the file_paths string into multiple arguments
 
-      # 5. [NEW] Remove the nested .git directory to prevent submodule errors
+      # 5. Remove the nested .git directory to prevent submodule errors
       - name: Clean up nested repository
         if: steps.checkout_target.outcome == 'success'
-        run: rm -rf ./self/.git
+        run: rm -rf ./self
 
       # 6. Commit and push all changes together in a single commit
       - name: Commit and Push Changes
