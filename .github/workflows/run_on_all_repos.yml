@@ -55,4 +55,4 @@ jobs:
       repo_name: ${{ matrix.repo }}
       file_path: ${{ matrix.file }}
     secrets:
-      CROSS_REPO_PAT: ${{ secrets.CROSS_REPO_PAT }}
+      cross_repo_pat: ${{ secrets.CROSS_REPO_PAT }}
