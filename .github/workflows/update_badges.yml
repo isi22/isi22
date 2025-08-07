@@ -42,16 +42,14 @@ jobs:
         run: python ./self/github_badges/update_badges.py ${{ inputs.file_paths }}
         # NOTE: The shell will expand the file_paths string into multiple arguments
 
-      # 5. Remove the nested .git directory to prevent submodule errors
-      - name: Clean up nested repository
-        if: steps.checkout_target.outcome == 'success'
-        run: rm -rf ./self
-
-      # 6. Commit and push all changes together in a single commit
+      # 5. Commit and push all changes together in a single commit
       - name: Commit and Push Changes
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          # Remove the 'self' directory from the Git index before adding other files.
+          rm -rf self
+          git rm --cached self -f || true
           # Add all tracked changes
           git add ${{ inputs.file_paths }}
           if git diff --staged --quiet; then
