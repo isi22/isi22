@@ -2,7 +2,7 @@
 name: Update Badges in File
 
 on:
-  workflow_call:
+  workflow_dispatch:
     inputs:
       repo_name:
         required: true
