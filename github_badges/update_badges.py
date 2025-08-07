@@ -56,7 +56,7 @@ def generate_badges_html(badge_keys: List[str]) -> str:
                 f"Warning: Badge key '{key}' not found or is missing 'badge_url' in {BADGES_FILE}."
             )
 
-    return f'<p align="left">{" ".join(html_badges)}</p>' if html_badges else ""
+    return f'<p align="left">\n{" ".join(html_badges)}</p>' if html_badges else ""
 
 
 def update_file(file_path_str: str):
