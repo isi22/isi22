@@ -19,7 +19,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: ${{ inputs.repo_name }}
-          token: ${{ secrets.YOUR_PAT }} # A Personal Access Token is needed here
+          token: ${{ secrets.CROSS_REPO_PAT }} 
 
       - name: Checkout Script Repo
         uses: actions/checkout@v4

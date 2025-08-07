@@ -10,7 +10,7 @@ jobs:
     steps:
       - name: Find files and trigger updates
         env:
-          GH_TOKEN: ${{ secrets.YOUR_PAT }} # Needs a PAT with repo scope
+          GH_TOKEN: ${{ secrets.CROSS_REPO_PAT }}
         run: |
           # Get a list of all your repositories
           REPOS=$(gh repo list --limit 1000 --json fullName --jq '.[].fullName')
