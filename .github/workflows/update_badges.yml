@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: ${{ inputs.repo_name }}
-          token: ${{ secrets.YOUR_PAT }}
+          token: ${{ secrets.CROSS_REPO_PAT }}
 
       # 2. Check out this repository to get access to the Python script
       - name: Checkout Script Repo
