@@ -52,6 +52,8 @@ jobs:
             echo "No changes to commit in ${{ inputs.repo_name }}."
           else
             git commit -m "style: update project badges for ${{ inputs.file_path }}"
+            echo "Pulling latest changes before push..."
+            git pull --rebase
             echo "Pushing changes to ${{ inputs.repo_name }}..."
             git push
           fi
