@@ -1,15 +1,14 @@
 import json
 import re
 from pathlib import Path
-from typing import List, Optional
+from typing import List
+import sys
 
 # --- Configuration ---
 # Using Path objects is still good practice for handling paths correctly.
 BADGES_FILE = (
     "./badges_repo/github_badges/badges.json"  # New path to the central badges file
 )
-
-README_FILE = "README.md"
 
 # --- Markers and Patterns ---
 START_MARKER = "<!--- Start of badges -->"
@@ -60,23 +59,22 @@ def generate_badges_html(badge_keys: List[str]) -> str:
     return f'<p align="left">{" ".join(html_badges)}</p>' if html_badges else ""
 
 
-def update_readme():
+def update_file(file_path_str: str):
     """
-    Reads the README, finds the badge keys, generates new badge HTML,
-    and updates the README file.
+    Reads a specific file, finds the badge keys, generates new badge HTML,
+    and updates the file.
     """
+    target_file = Path(file_path_str)
     try:
         # Using with open(...) is a robust way to handle file reading.
-        with open(README_FILE, "r", encoding="utf-8") as f:
-            readme_content = f.read()
+        with open(target_file, "r", encoding="utf-8") as f:
+            content = f.read()
 
-        match = BADGE_LIST_COMMENT_PATTERN.search(readme_content)
+        match = BADGE_LIST_COMMENT_PATTERN.search(content)
 
         if not match:
             # Corrected the error message to show the expected pattern accurately.
-            print(
-                "Error: Badge list comment `<!-- Badges: ... -->` not found in README.md."
-            )
+            print("Error: Badge list comment `<!-- Badges: ... -->` not found in File.")
             return
 
         # This line is useful for debugging to see what the regex matched.
@@ -92,7 +90,7 @@ def update_readme():
         new_badges_html = generate_badges_html(badge_keys)
 
         if not new_badges_html:
-            print("No new badges were generated. README will not be updated.")
+            print("No new badges were generated. File will not be updated.")
             return
 
         # Construct the new content block that will replace the old one.
@@ -104,22 +102,22 @@ def update_readme():
         )
 
         # Check if the start/end markers exist to replace the block.
-        if BADGE_BLOCK_PATTERN.search(readme_content):
-            updated_readme = BADGE_BLOCK_PATTERN.sub(new_block_content, readme_content)
+        if BADGE_BLOCK_PATTERN.search(content):
+            updated_file = BADGE_BLOCK_PATTERN.sub(new_block_content, content)
         else:
             print(
-                f"Error: Markers `{START_MARKER}` and `{END_MARKER}` not found in README.md."
+                f"Error: Markers `{START_MARKER}` and `{END_MARKER}` not found in File."
             )
             return
 
         # Write the updated content back to the file.
-        with open(README_FILE, "w", encoding="utf-8") as f:
-            f.write(updated_readme)
+        with open(target_file, "w", encoding="utf-8") as f:
+            f.write(updated_file)
 
-        print("README.md updated successfully with new badges.")
+        print("File updated successfully with new badges.")
 
     except FileNotFoundError:
-        print(f"Error: {README_FILE} not found.")
+        print(f"Error: {target_file} not found.")
     except Exception as e:
         # Catch other potential errors, like permissions issues.
         print(f"An unexpected error occurred: {e}")
@@ -127,7 +125,12 @@ def update_readme():
 
 def main():
     """Main execution function."""
-    update_readme()
+    if len(sys.argv) > 1:
+        file_to_update = sys.argv[1]
+        print(f"Attempting to update badges in: {file_to_update}")
+        update_file(file_to_update)
+    else:
+        print("Error: No file path provided.")
 
 
 if __name__ == "__main__":

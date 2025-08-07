@@ -1,0 +1,28 @@
+# .github/workflows/run-on-all-repos.yml
+name: Find and Update Badges Everywhere
+
+on:
+  workflow_dispatch:
+
+jobs:
+  call-reusable-workflow-for-each-repo:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Find files and trigger updates
+        env:
+          GH_TOKEN: ${{ secrets.YOUR_PAT }} # Needs a PAT with repo scope
+        run: |
+          # Get a list of all your repositories
+          REPOS=$(gh repo list --limit 1000 --json fullName --jq '.[].fullName')
+
+          for REPO in $REPOS; do
+            echo "Scanning repository: $REPO"
+            
+            # Use GitHub API to find all .md and .ipynb files
+            FILES=$(gh api "repos/$REPO/git/trees/main?recursive=1" --jq '.tree[] | select(.path | endswith(".md") or endswith(".ipynb")) | .path')
+
+            for FILE in $FILES; do
+              echo "--- Found $FILE in $REPO, triggering update. ---"
+              gh workflow run update_badges.yml --repo "$REPO" -f repo_name="$REPO" -f file_path="$FILE"
+            done
+          done

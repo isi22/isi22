@@ -1,0 +1,49 @@
+# .github/workflows/update-badges.yml
+name: Update Badges in File
+
+on:
+  workflow_call:
+    inputs:
+      repo_name:
+        required: true
+        type: string
+      file_path:
+        required: true
+        type: string
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Target Repo
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.repo_name }}
+          token: ${{ secrets.YOUR_PAT }} # A Personal Access Token is needed here
+
+      - name: Checkout Script Repo
+        uses: actions/checkout@v4
+        with:
+          repository: isi22/isi22 
+          path: ./script-repo
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Run Badge Update Script
+        run: python ./script-repo/github_badges/update_badges.py ${{ inputs.file_path }}
+
+      # Add steps here to commit and push the changes back to the target repo
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add .
+          if git diff --staged --quiet; then
+            echo "No changes to commit."
+          else
+            git commit -m "style: update project badges"
+            git push
+          fi
