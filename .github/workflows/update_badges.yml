@@ -24,11 +24,15 @@ jobs:
         with:
           repository: ${{ inputs.repo_name }}
           token: ${{ secrets.cross_repo_pat }}
+        continue-on-error: true
+        id: checkout_target
 
       # 2. Check out this repository to get access to the Python script
       - name: Checkout Script Repo
         uses: actions/checkout@v4
         with:
+          repository: isi22/isi22
+          token: ${{ secrets.cross_repo_pat }}
           path: self # Check it out into a 'self' directory
 
       # 3. Set up Python
@@ -48,7 +52,7 @@ jobs:
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           # Add all tracked changes
-          git add -u
+          git add ${{ inputs.file_paths }}
           if git diff --staged --quiet; then
             echo "No changes to commit in ${{ inputs.repo_name }}."
           else
