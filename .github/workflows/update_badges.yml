@@ -11,8 +11,8 @@ on:
         required: true
         type: string
       secrets:
-      CROSS_REPO_PAT:
-        required: true
+        CROSS_REPO_PAT:
+          required: true
 
 jobs:
   update-file:
