@@ -24,15 +24,11 @@ jobs:
         with:
           repository: ${{ inputs.repo_name }}
           token: ${{ secrets.cross_repo_pat }}
-        continue-on-error: true
-        id: checkout_target
 
       # 2. Check out this repository to get access to the Python script
       - name: Checkout Script Repo
         uses: actions/checkout@v4
         with:
-          repository: isi22/isi22
-          token: ${{ secrets.cross_repo_pat }}
           path: self # Check it out into a 'self' directory
 
       # 3. Set up Python
@@ -46,7 +42,12 @@ jobs:
         run: python ./self/github_badges/update_badges.py ${{ inputs.file_paths }}
         # NOTE: The shell will expand the file_paths string into multiple arguments
 
-      # 5. Commit and push all changes together in a single commit
+      # 5. [NEW] Remove the nested .git directory to prevent submodule errors
+      - name: Clean up nested repository
+        if: steps.checkout_target.outcome == 'success'
+        run: rm -rf ./self/.git
+
+      # 6. Commit and push all changes together in a single commit
       - name: Commit and Push Changes
         run: |
           git config --global user.name 'github-actions[bot]'
