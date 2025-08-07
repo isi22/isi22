@@ -54,6 +54,3 @@ jobs:
     with:
       repo_name: ${{ matrix.repo }}
       file_path: ${{ matrix.file }}
-    # Pass the PAT secret to the reusable workflow
-    secrets:
-      YOUR_PAT: ${{ secrets.YOUR_PAT }}
