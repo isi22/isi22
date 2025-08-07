@@ -2,18 +2,13 @@ name: 'Update Project Badges'
 description: 'A reusable action to update a project''s README with skills badges.'
 author: 'Isabelle Kuder'
 
-inputs:
-  badge-list:
-    description: 'A comma-separated list of badge keys to include.'
-    required: true
-
 runs:
   using: "composite"
   steps:
     - name: Get badge files from this repo
       uses: actions/checkout@v4
       with:
-        repository: 'isi22/isi22'  # Replace with your username and repo name
+        repository: 'isi22/isi22' 
         path: './badges_repo'
 
     - name: Setup Python
