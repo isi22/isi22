@@ -10,9 +10,6 @@ on:
       file_path:
         required: true
         type: string
-    secrets:
-      YOUR_PAT:
-        required: true
 
 jobs:
   update-file:
