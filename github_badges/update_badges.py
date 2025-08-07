@@ -6,9 +6,7 @@ import sys
 
 # --- Configuration ---
 # Using Path objects is still good practice for handling paths correctly.
-BADGES_FILE = (
-    "./badges_repo/github_badges/badges.json"  # New path to the central badges file
-)
+BADGES_FILE = "./self/github_badges/badges.json"  # New path to the central badges file
 
 # --- Markers and Patterns ---
 START_MARKER = "<!--- Start of badges -->"
