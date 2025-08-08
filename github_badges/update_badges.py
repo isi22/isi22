@@ -56,6 +56,7 @@ def process_badge_content(content: str) -> Tuple[str, str, bool]:
 
 # --- Project Parsing Logic (remains the same) ---
 def parse_project_file(content: str, badges_html: str, file_path: Path, repo_name: str) -> Optional[Dict]:
+    print(f"Content: {content}", file=sys.stderr)
     blurb_match = BLURB_MARKER_PATTERN.search(content)
     print(f"Blurb match: {blurb_match}", file=sys.stderr)
     if blurb_match:
