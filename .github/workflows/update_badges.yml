@@ -58,6 +58,9 @@ jobs:
           # Set the captured JSON as a step output
           echo "projects_json=$JSON_OUTPUT" >> $GITHUB_OUTPUT
       
+      - name: Debug Script Output
+        run: echo "Captured JSON from script: ${{ steps.script-run.outputs.projects_json }}"
+
       - name: Commit and Push Badge Changes
         run: |
           git config --global user.name 'github-actions[bot]'
