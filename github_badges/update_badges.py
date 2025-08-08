@@ -20,8 +20,7 @@ THUMBNAIL_BLOCK_PATTERN = re.compile(f"{re.escape(START_THUMBNAIL_MARKER)}(.*?){
 TITLE_PATTERN = re.compile(r"^\s*#\s+(.*)", re.MULTILINE)
 
 # --- Configuration ---
-# BADGES_FILE = "./self/github_badges/badges.json"
-BADGES_FILE = "github_badges/badges.json"
+BADGES_FILE = "./self/github_badges/badges.json"
 
 # --- Badge Generation Logic (remains the same) ---
 def generate_badges_html(badge_keys: List[str]) -> str:
@@ -93,6 +92,8 @@ def parse_project_file(content: str, badges_html: str, file_path: Path, repo_nam
 
 # --- File Processing (remains the same) ---
 def process_file(file_path: Path, repo_name: str, is_private: bool) -> Optional[Dict]:
+
+    print(f"--- Processing file: {file_path} ---", file=sys.stderr)
     project_data = None
     content = ""
     try:
