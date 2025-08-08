@@ -70,6 +70,14 @@ jobs:
           repository: 'isi22/isi22' # Your target repository
           token: ${{ secrets.CROSS_REPO_PAT }}
 
+      - name: Inspect the `needs` context
+        env:
+          NEEDS_CONTEXT: ${{ toJSON(needs) }}
+        run: |
+          echo "--- Raw 'needs' context received by aggregator ---"
+          echo "$NEEDS_CONTEXT"
+          echo "--------------------------------------------------"
+
       - name: Aggregate all project data
         id: aggregate
         env:
