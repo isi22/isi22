@@ -39,7 +39,7 @@ def generate_badges_html(badge_keys: List[str]) -> str:
             html_badges.append(f'<img alt="{alt_text}" src="{badge_data["badge_url"]}" />')
     return f'<p align="left">{" ".join(html_badges)}</p>' if html_badges else ""
 
-def process_badge_content(content: str) -> Tuple[str, bool]:
+def process_badge_content(content: str) -> Tuple[str, str, bool]:
     match = BADGE_LIST_COMMENT_PATTERN.search(content)
     if not match: return content, False
     badge_comment_line = match.group(0)
@@ -49,11 +49,11 @@ def process_badge_content(content: str) -> Tuple[str, bool]:
     new_block_content = f"{START_BADGE_MARKER}\n{badge_comment_line}\n\n{new_badges_html}\n{END_BADGE_MARKER}"
     if BADGE_BLOCK_PATTERN.search(content):
         updated_content = BADGE_BLOCK_PATTERN.sub(new_block_content, content)
-        return updated_content, content != updated_content
-    return content, False
+        return updated_content, new_badges_html, content != updated_content
+    return content, new_badges_html, False
 
 # --- Project Parsing Logic (remains the same) ---
-def parse_project_file(content: str, file_path: Path, repo_name: str) -> Optional[Dict]:
+def parse_project_file(content: str, badges_html: str, file_path: Path, repo_name: str) -> Optional[Dict]:
     title_match = TITLE_PATTERN.search(content)
     blurb_match = BLURB_MARKER_PATTERN.search(content)
     badge_match = BADGE_BLOCK_PATTERN.search(content)
@@ -69,13 +69,17 @@ def parse_project_file(content: str, file_path: Path, repo_name: str) -> Optiona
         relative_path = img_src_match.group(1)
         thumbnail_url = f"https://raw.githubusercontent.com/{repo_name}/main/{relative_path}"
 
+    if file_path.suffix == ".md":
+        url = f"https://github.com/{repo_name}/blob/main/{file_path.as_posix()}"
+    elif file_path.suffix == ".ipynb":
+        url = f"https://nbviewer.org/github/{repo_name}/blob/main/{file_path.as_posix()}"
+
     return {
         "title": title_match.group(1).strip(),
         "blurb": blurb_match.group(1).strip(),
-        "badges_html": f"{START_BADGE_MARKER}{badge_match.group(1).strip()}{END_BADGE_MARKER}",
-        "thumbnail_html": f"{START_THUMBNAIL_MARKER}{thumbnail_html}{END_THUMBNAIL_MARKER}",
+        "badges": badges_html,
         "thumbnail_url": thumbnail_url,
-        "url": f"https://github.com/{repo_name}/blob/main/{file_path.as_posix()}"
+        "url": url
     }
 
 # --- File Processing (remains the same) ---
@@ -85,7 +89,7 @@ def process_file(file_path: Path, repo_name: str, is_private: bool) -> Optional[
     try:
         if file_path.suffix == ".md":
             content = file_path.read_text(encoding="utf-8")
-            updated_content, was_changed = process_badge_content(content)
+            updated_content, badges_html, was_changed = process_badge_content(content)
             if was_changed:
                 file_path.write_text(updated_content, encoding="utf-8")
                 print(f"Updated badges in {file_path.name}.", file=sys.stderr)
@@ -97,7 +101,7 @@ def process_file(file_path: Path, repo_name: str, is_private: bool) -> Optional[
                 if cell.get("cell_type") == "markdown":
                     source_content = "".join(cell.get("source", []))
                     content += source_content + "\n"
-                    updated_source, was_changed = process_badge_content(source_content)
+                    updated_source, badges_html, was_changed = process_badge_content(source_content)
                     if was_changed:
                         cell["source"] = [line + "\n" for line in updated_source.split("\n")]
                         notebook_modified = True
@@ -108,7 +112,7 @@ def process_file(file_path: Path, repo_name: str, is_private: bool) -> Optional[
             return None
 
         if not is_private:
-            project_data = parse_project_file(content, file_path, repo_name)
+            project_data = parse_project_file(content, badges_html, file_path, repo_name)
 
     except Exception as e:
         print(f"Error processing {file_path.name}: {e}", file=sys.stderr)
