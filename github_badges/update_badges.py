@@ -41,11 +41,11 @@ def generate_badges_html(badge_keys: List[str]) -> str:
 
 def process_badge_content(content: str) -> Tuple[str, str, bool]:
     match = BADGE_LIST_COMMENT_PATTERN.search(content)
-    if not match: return content, False
+    if not match: return content, "", False
     badge_comment_line = match.group(0)
     badge_keys = [key.strip() for key in match.group(1).strip().split(",") if key.strip()]
     new_badges_html = generate_badges_html(badge_keys)
-    if not new_badges_html: return content, False
+    if not new_badges_html: return content, "", False
     new_block_content = f"{START_BADGE_MARKER}\n{badge_comment_line}\n\n{new_badges_html}\n{END_BADGE_MARKER}"
     if BADGE_BLOCK_PATTERN.search(content):
         updated_content = BADGE_BLOCK_PATTERN.sub(new_block_content, content)
