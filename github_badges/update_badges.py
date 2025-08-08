@@ -127,6 +127,7 @@ def process_file(file_path: Path, repo_name: str, is_private: bool) -> Optional[
     except Exception as e:
         print(f"Error processing {file_path.name}: {e}", file=sys.stderr)
     
+    print(f"Project data: {project_data} ---", file=sys.stderr)
     return project_data
 
 def main():
