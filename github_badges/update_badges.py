@@ -20,7 +20,8 @@ THUMBNAIL_BLOCK_PATTERN = re.compile(f"{re.escape(START_THUMBNAIL_MARKER)}(.*?){
 TITLE_PATTERN = re.compile(r"^\s*#\s+(.*)", re.MULTILINE)
 
 # --- Configuration ---
-BADGES_FILE = "./self/github_badges/badges.json"
+# BADGES_FILE = "./self/github_badges/badges.json"
+BADGES_FILE = "github_badges/badges.json"
 
 # --- Badge Generation Logic (remains the same) ---
 def generate_badges_html(badge_keys: List[str]) -> str:
@@ -129,6 +130,7 @@ def process_file(file_path: Path, repo_name: str, is_private: bool) -> Optional[
 
 def main():
     """Main execution function."""
+    print("--- Python script started successfully ---", file=sys.stderr)
     parser = argparse.ArgumentParser(description="Update badges and parse project data.")
     parser.add_argument("--repo-name", required=True)
     parser.add_argument("--is-private", required=True, type=lambda v: v.lower() == 'true')
