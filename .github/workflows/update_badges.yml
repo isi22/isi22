@@ -75,10 +75,16 @@ jobs:
             git push
           fi
       
+      - name: Sanitize repo name for artifact
+        id: sanitize
+        run: |
+          # Replace the '/' in the repo name with a '-'
+          echo "sanitized_repo_name=$(echo '${{ inputs.repo_name }}' | sed 's/\//-/g')" >> $GITHUB_OUTPUT
+
       - name: Upload Project Data Artifact
         if: steps.script-run.outputs.projects_found == 'true'
         uses: actions/upload-artifact@v4
         with:
-          # Give each artifact a unique name based on the repo and workflow run
-          name: project-data-${{ github.run_id }}-${{ inputs.repo_name }}
+          # Use the new sanitized name
+          name: project-data-${{ github.run_id }}-${{ steps.sanitize.outputs.sanitized_repo_name }}
           path: projects_data.json
