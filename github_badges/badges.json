@@ -35,6 +35,12 @@
   "langchain": {
     "badge_url": "https://img.shields.io/badge/-LangChain-1C3C3C?logo=langchain&logoColor=white&style=flat-square"
   },
+  "scikit": {
+    "badge_url": "https://img.shields.io/badge/-scikit--learn-F7931E?logo=scikit-learn&logoColor=white&style=flat-square"
+  },
+  "gradio": {
+    "badge_url": "https://img.shields.io/badge/-Gradio-F97316?logo=gradio&logoColor=white&style=flat-square"
+  },
   "pytorch": {
     "badge_url": "https://img.shields.io/badge/-PyTorch-EE4C2C?logo=pytorch&logoColor=white&style=flat-square"
   },
