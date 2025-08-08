@@ -72,14 +72,12 @@ jobs:
 
       - name: Aggregate all project data
         id: aggregate
+        env:
+          ALL_PROJECTS_JSON: ${{ toJSON(needs.update-and-parse.outputs) }}
         run: |
-          # The needs context contains the outputs of all matrix jobs
-          # We convert it to JSON and use jq to extract and merge the project data
           echo "Aggregating project data from all repositories..."
-          ALL_PROJECTS_JSON='${{ toJSON(needs.update-and-parse.outputs) }}'
           
-          # Use jq to parse the outputs object, select each job's 'projects_json' string,
-          # parse that string into a JSON object, and finally merge all resulting arrays.
+          # Read from the environment variable and pipe to jq
           echo "$ALL_PROJECTS_JSON" | jq '[.[] | .outputs.projects_json] | map(fromjson) | add | unique_by(.url)' > projects.json
 
           echo "Aggregation complete. Final project data:"
