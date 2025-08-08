@@ -80,8 +80,8 @@ jobs:
           
           # Use jq to parse the outputs object, select each job's 'projects_json' string,
           # parse that string into a JSON object, and finally merge all resulting arrays.
-          echo "$ALL_PROJECTS_JSON" | jq -r '.[].projects_json' | jq -s 'map(fromjson) | add | unique_by(.url)' > projects.json
-          
+          echo "$ALL_PROJECTS_JSON" | jq -s '.[0] | map(.outputs.projects_json | fromjson) | add | unique_by(.url)' > projects.json
+
           echo "Aggregation complete. Final project data:"
           cat projects.json
 
