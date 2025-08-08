@@ -1,6 +1,7 @@
-name: Reusable Badge Updater
+# .github/workflows/update_badges.yml
 
-# This trigger makes the workflow "reusable" or "callable"
+name: Reusable Updater and Parser
+
 on:
   workflow_call:
     inputs:
@@ -10,52 +11,64 @@ on:
       file_paths:
         required: true
         type: string
+      is_private:
+        required: true
+        type: boolean
     secrets:
       cross_repo_pat:
         required: true
+    # Define the output that will be sent back to the calling workflow
+    outputs:
+      projects_json:
+        description: "A JSON string of found projects in the repository."
+        value: ${{ jobs.update-and-parse-file.outputs.projects_data }}
 
 jobs:
-  update-file:
+  update-and-parse-file:
     runs-on: ubuntu-latest
+    # Define job-level outputs
+    outputs:
+      projects_data: ${{ steps.script-run.outputs.projects_json }}
     steps:
-      # 1. Check out the target repository that needs its file updated
       - name: Checkout Target Repo (${{ inputs.repo_name }})
         uses: actions/checkout@v4
         with:
           repository: ${{ inputs.repo_name }}
           token: ${{ secrets.cross_repo_pat }}
 
-      # 2. Check out this repository to get access to the Python script
       - name: Checkout Script Repo
         uses: actions/checkout@v4
         with:
-          path: self # Check it out into a 'self' directory
+          path: self
 
-      # 3. Set up Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.10'
 
-      # 4. Run the generalized Python script on all files at once
-      - name: Run Badge Update Script
-        run: python ./self/github_badges/update_badges.py ${{ inputs.file_paths }}
-        # NOTE: The shell will expand the file_paths string into multiple arguments
-
-      # 5. Commit and push all changes together in a single commit
-      - name: Commit and Push Changes
+      - name: Run Update and Parse Script
+        id: script-run
+        run: |
+          # The script will now print a single line of JSON. We capture this.
+          JSON_OUTPUT=$(python ./self/update_badges.py \
+            --repo-name "${{ inputs.repo_name }}" \
+            --is-private "${{ inputs.is_private }}" \
+            --files ${{ inputs.file_paths }})
+          
+          # Set the captured JSON as a step output
+          echo "projects_json=$JSON_OUTPUT" >> $GITHUB_OUTPUT
+      
+      - name: Commit and Push Badge Changes
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          # Remove the 'self' directory from the Git index before adding other files.
           rm -rf self
           git rm --cached self -f || true
-          # Add all tracked changes
           git add ${{ inputs.file_paths }}
           if git diff --staged --quiet; then
-            echo "No changes to commit in ${{ inputs.repo_name }}."
+            echo "No badge changes to commit in ${{ inputs.repo_name }}."
           else
             git commit -m "style: update project badges"
-            echo "Pushing changes to ${{ inputs.repo_name }}..."
+            echo "Pushing badge changes to ${{ inputs.repo_name }}..."
             git push
           fi
