@@ -42,7 +42,7 @@ jobs:
         id: script-run
         run: |
           # The script will now print a single line of JSON. We capture this.
-          python ./self/github_badges/adges.py \
+          python ./self/github_badges/update_badges.py \
             --repo-name "${{ inputs.repo_name }}" \
             --is-private "${{ inputs.is_private }}" \
             --files ${{ inputs.file_paths }} > projects_data.json
