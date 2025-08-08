@@ -24,6 +24,7 @@ BADGES_FILE = "./self/github_badges/badges.json"
 
 # --- Badge Generation Logic (remains the same) ---
 def generate_badges_html(badge_keys: List[str]) -> str:
+    print(f"Badge keys: {badge_keys}", file=sys.stderr)
     if not badge_keys: return ""
     try:
         with open(BADGES_FILE, "r", encoding="utf-8") as f:
@@ -41,10 +42,12 @@ def generate_badges_html(badge_keys: List[str]) -> str:
 
 def process_badge_content(content: str) -> Tuple[str, str, bool]:
     match = BADGE_LIST_COMMENT_PATTERN.search(content)
+    print(f"Badge match: {match}", file=sys.stderr)
     if not match: return content, "", False
     badge_comment_line = match.group(0)
     badge_keys = [key.strip() for key in match.group(1).strip().split(",") if key.strip()]
     new_badges_html = generate_badges_html(badge_keys)
+    print(f"Badge html: {new_badges_html}", file=sys.stderr)
     if not new_badges_html: return content, "", False
     new_block_content = f"{START_BADGE_MARKER}\n{badge_comment_line}\n\n{new_badges_html}\n{END_BADGE_MARKER}"
     if BADGE_BLOCK_PATTERN.search(content):
@@ -127,7 +130,7 @@ def process_file(file_path: Path, repo_name: str, is_private: bool) -> Optional[
     except Exception as e:
         print(f"Error processing {file_path.name}: {e}", file=sys.stderr)
     
-    print(f"Project data: {project_data} ---", file=sys.stderr)
+    print(f"Project data: {project_data}", file=sys.stderr)
     return project_data
 
 def main():
