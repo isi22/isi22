@@ -78,7 +78,7 @@ jobs:
           echo "Aggregating project data from all repositories..."
           
           # Read from the environment variable and pipe to jq
-          echo "$ALL_PROJECTS_JSON" | jq -r '.. | .projects_json? | select(. != null)' | jq -s 'map(fromjson) | add | unique_by(.url)' > projects.json
+          echo "$ALL_PROJECTS_JSON" | jq -r '.. | .projects_json? | select(. != null)' | jq -s 'map(if type == "string" then fromjson else . end) | add | unique_by(.url)' > projects.json
 
           echo "Aggregation complete. Final project data:"
           cat projects.json
