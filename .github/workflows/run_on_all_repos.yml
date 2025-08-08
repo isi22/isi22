@@ -70,26 +70,30 @@ jobs:
           repository: 'isi22/isi22' # Your target repository
           token: ${{ secrets.CROSS_REPO_PAT }}
 
-      - name: Inspect the `needs` context
-        env:
-          NEEDS_CONTEXT: ${{ toJSON(needs) }}
-        run: |
-          echo "--- Raw 'needs' context received by aggregator ---"
-          echo "$NEEDS_CONTEXT"
-          echo "--------------------------------------------------"
+      - name: Download all project data artifacts
+        uses: actions/download-artifact@v4
+        with:
+          # Download all artifacts from this workflow run into a directory
+          path: ./project-artifacts
+          pattern: project-data-${{ github.run_id }}-*
+          merge-multiple: true
 
       - name: Aggregate all project data
         id: aggregate
-        env:
-          ALL_PROJECTS_JSON: ${{ toJSON(needs.update-and-parse.outputs) }}
         run: |
-          echo "Aggregating project data from all repositories..."
+          echo "Aggregating project files..."
+          # Check if any artifact files were downloaded
+          if [ -z "$(ls -A ./project-artifacts)" ]; then
+            echo "No project artifacts found. Resulting file will be empty."
+            echo "[]" > projects.json
+          else
+            # Use jq to merge all JSON files into a single array
+            jq -s 'add | unique_by(.url)' ./project-artifacts/*.json > projects.json
+          fi
           
-          # Read from the environment variable and pipe to jq
-          echo "$ALL_PROJECTS_JSON" | jq -r '.. | .projects_json? | select(. != null)' | jq -s 'map(if type == "string" then fromjson else . end) | add | unique_by(.url)' > projects.json
-
           echo "Aggregation complete. Final project data:"
           cat projects.json
+
 
       - name: Commit and Push aggregated file
         run: |
