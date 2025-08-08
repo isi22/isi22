@@ -47,7 +47,6 @@ def process_badge_content(content: str) -> Tuple[str, str, bool]:
     badge_comment_line = match.group(0)
     badge_keys = [key.strip() for key in match.group(1).strip().split(",") if key.strip()]
     new_badges_html = generate_badges_html(badge_keys)
-    print(f"Badge html: {new_badges_html}", file=sys.stderr)
     if not new_badges_html: return content, "", False
     new_block_content = f"{START_BADGE_MARKER}\n{badge_comment_line}\n\n{new_badges_html}\n{END_BADGE_MARKER}"
     if BADGE_BLOCK_PATTERN.search(content):
@@ -58,6 +57,7 @@ def process_badge_content(content: str) -> Tuple[str, str, bool]:
 # --- Project Parsing Logic (remains the same) ---
 def parse_project_file(content: str, badges_html: str, file_path: Path, repo_name: str) -> Optional[Dict]:
     blurb_match = BLURB_MARKER_PATTERN.search(content)
+    print(f"Blurb match: {blurb_match}", file=sys.stderr)
     if blurb_match:
         blurb = blurb_match.group(1).strip()
     else:
@@ -118,12 +118,14 @@ def process_file(file_path: Path, repo_name: str, is_private: bool) -> Optional[
                     if was_changed:
                         cell["source"] = [line + "\n" for line in updated_source.split("\n")]
                         notebook_modified = True
+                    break # Exit the loop after processing the first markdown cell
             if notebook_modified:
                 file_path.write_text(json.dumps(notebook_data, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
                 print(f"Updated badges in {file_path.name}.", file=sys.stderr)
         else:
             return None
 
+        print(f"Badge html: {badges_html}", file=sys.stderr)
         if not is_private:
             project_data = parse_project_file(content, badges_html, file_path, repo_name)
 
