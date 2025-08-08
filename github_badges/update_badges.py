@@ -54,20 +54,28 @@ def process_badge_content(content: str) -> Tuple[str, str, bool]:
 
 # --- Project Parsing Logic (remains the same) ---
 def parse_project_file(content: str, badges_html: str, file_path: Path, repo_name: str) -> Optional[Dict]:
-    title_match = TITLE_PATTERN.search(content)
     blurb_match = BLURB_MARKER_PATTERN.search(content)
-    badge_match = BADGE_BLOCK_PATTERN.search(content)
-    thumbnail_match = THUMBNAIL_BLOCK_PATTERN.search(content)
-
-    if not (title_match and blurb_match and badge_match and thumbnail_match):
+    if blurb_match:
+        blurb = blurb_match.group(1).strip()
+    else:
         return None
 
-    thumbnail_html = thumbnail_match.group(1).strip()
-    img_src_match = re.search(r'src="([^"]+)"', thumbnail_html)
-    thumbnail_url = ""
-    if img_src_match:
-        relative_path = img_src_match.group(1)
-        thumbnail_url = f"https://raw.githubusercontent.com/{repo_name}/main/{relative_path}"
+    title_match = TITLE_PATTERN.search(content)
+    if title_match:
+        title = title_match.group(1).strip()
+    else:
+        title =""
+
+    thumbnail_match = THUMBNAIL_BLOCK_PATTERN.search(content)
+    if thumbnail_match:
+        thumbnail_html = thumbnail_match.group(1).strip()
+        img_src_match = re.search(r'src="([^"]+)"', thumbnail_html)
+        thumbnail_url = ""
+        if img_src_match:
+            relative_path = img_src_match.group(1)
+            thumbnail_url = f"https://raw.githubusercontent.com/{repo_name}/main/{relative_path}"
+    else:
+        thumbnail_url = ""
 
     if file_path.suffix == ".md":
         url = f"https://github.com/{repo_name}/blob/main/{file_path.as_posix()}"
@@ -75,8 +83,8 @@ def parse_project_file(content: str, badges_html: str, file_path: Path, repo_nam
         url = f"https://nbviewer.org/github/{repo_name}/blob/main/{file_path.as_posix()}"
 
     return {
-        "title": title_match.group(1).strip(),
-        "blurb": blurb_match.group(1).strip(),
+        "title": title,
+        "blurb": blurb,
         "badges": badges_html,
         "thumbnail_url": thumbnail_url,
         "url": url
