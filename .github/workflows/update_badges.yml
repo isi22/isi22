@@ -17,18 +17,10 @@ on:
     secrets:
       cross_repo_pat:
         required: true
-    # Define the output that will be sent back to the calling workflow
-    outputs:
-      projects_json:
-        description: "A JSON string of found projects in the repository."
-        value: ${{ jobs.update-and-parse-file.outputs.projects_data }}
 
 jobs:
   update-and-parse-file:
     runs-on: ubuntu-latest
-    # Define job-level outputs
-    outputs:
-      projects_data: ${{ steps.script-run.outputs.projects_json }}
     steps:
       - name: Checkout Target Repo (${{ inputs.repo_name }})
         uses: actions/checkout@v4
@@ -50,25 +42,23 @@ jobs:
         id: script-run
         run: |
           # The script will now print a single line of JSON. We capture this.
-          JSON_OUTPUT=$(python ./self/github_badges/update_badges.py \
+          python ./self/update_badges.py \
             --repo-name "${{ inputs.repo_name }}" \
             --is-private "${{ inputs.is_private }}" \
-            --files ${{ inputs.file_paths }})
+            --files ${{ inputs.file_paths }} > projects_data.json
           
-          # Set the captured JSON as a step output
-          {
-            echo 'projects_json<<EOF'
-            echo "$JSON_OUTPUT"
-            echo 'EOF'
-          } >> "$GITHUB_OUTPUT"
+          # Check if the generated file has content (more than just '[]')
+          if [ $(wc -c < projects_data.json) -gt 2 ]; then
+            echo "projects_found=true" >> $GITHUB_OUTPUT
+          else
+            echo "projects_found=false" >> $GITHUB_OUTPUT
+          fi
       
       - name: Debug Script Output
-        env:
-          JSON_DATA: ${{ steps.script-run.outputs.projects_json }}
         run: |
-          echo "--- Captured JSON from script ---"
-          echo "$JSON_DATA"
-          echo "---------------------------------"
+          echo "--- Captured JSON from script for ${{ inputs.repo_name }} ---"
+          cat projects_data.json
+          echo "--------------------------------------------------"
 
       - name: Commit and Push Badge Changes
         run: |
@@ -84,3 +74,11 @@ jobs:
             echo "Pushing badge changes to ${{ inputs.repo_name }}..."
             git push
           fi
+      
+      - name: Upload Project Data Artifact
+        if: steps.script-run.outputs.projects_found == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          # Give each artifact a unique name based on the repo and workflow run
+          name: project-data-${{ github.run_id }}-${{ inputs.repo_name }}
+          path: projects_data.json
