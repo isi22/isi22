@@ -87,7 +87,7 @@ jobs:
             echo "[]" > projects.json
           else
             # Use jq to merge all JSON files into a single array
-            jq -s 'add | unique_by(.url)' ./project-artifacts/*.json > projects.json
+            jq -s 'add | unique_by(.url)' ./project-artifacts/**/*.json > projects.json
           fi
           
           echo "Aggregation complete. Final project data:"
