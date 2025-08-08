@@ -76,7 +76,6 @@ jobs:
           # Download all artifacts from this workflow run into a directory
           path: ./project-artifacts
           pattern: project-data-${{ github.run_id }}-*
-          merge-multiple: true
 
       - name: Aggregate all project data
         id: aggregate
