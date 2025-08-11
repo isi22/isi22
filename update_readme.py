@@ -5,27 +5,34 @@ from playwright.sync_api import sync_playwright
 
 # --- Configuration ---
 CARD_WIDTH = 400
-DISPLAY_WIDTH = 400
+DISPLAY_WIDTH = 300
 CARD_HEIGHT = 550
-# Margin is no longer needed for the screenshot itself
-# CARD_MARGIN = 15
 BADGES_PADDING = 15
 CARD_BORDER_RADIUS = 15
 CARD_BG_COLOR = "rgba(245, 245, 245, 1)"
 BLURB_PADDING = 30
-TITLE_FONT_FAMILY = "Arial"
+SCALE_FACTOR = 2
+
+# --- Font and Color Customization (UPDATED) ---
+TITLE_FONT_FAMILY = "Arial, sans-serif"
 TITLE_COLOR = "#424141"
 TITLE_FONT_SIZE = "20px"
-BLURB_FONT_FAMILY = "Arial"
+BLURB_FONT_FAMILY = "Arial, sans-serif"
 BLURB_COLOR = "#6e6e6e"
 BLURB_FONT_SIZE = "14px"
-SCALE_FACTOR = 2
 
 # --- File Paths & Setup ---
 IMAGE_OUTPUT_DIR = "portfolio_cards"
 JSON_FILE_PATH = "projects.json"
 README_PATH = "README.md"
 os.makedirs(IMAGE_OUTPUT_DIR, exist_ok=True)
+
+# --- Markers and Patterns for Parsing ---
+START_MARKER = "<!-- Start of Project Grid -->"
+END_MARKER = "<!-- End of Project Grid -->"
+BLOCK_PATTERN = re.compile(
+    f"{re.escape(START_MARKER)}(.*?){re.escape(END_MARKER)}", re.DOTALL
+)
 
 with open(JSON_FILE_PATH, "r", encoding="utf-8") as f:
     projects = json.load(f)
@@ -46,7 +53,6 @@ with sync_playwright() as p:
         safe_title = re.sub(r"[^a-zA-Z0-9_-]", "", project["title"]).lower()
         image_filename = f"{safe_title}.png"
 
-        # Note: id="card" is added, margin is removed, and 'px' units are added for clarity.
         html_template = f"""
         <div id="card" style="width: {CARD_WIDTH}px; height: {CARD_HEIGHT}px; background-color: {CARD_BG_COLOR}; border-radius: {CARD_BORDER_RADIUS}px; overflow: hidden; display: inline-block; text-align: left; vertical-align: top;">
             <a href="{project['url']}" target="_blank">
@@ -56,36 +62,36 @@ with sync_playwright() as p:
                 {badges_html}
             </div>
             <div style="padding: 0 {BLURB_PADDING}px 0 {BLURB_PADDING}px;">
-                <h3 style="font-family: {TITLE_FONT_FAMILY}; color: {TITLE_COLOR}; font-size: {TITLE_FONT_SIZE};">{project['title']}</h3>
-                <p style="font-family: {BLURB_FONT_FAMILY}; color: {BLURB_COLOR}; font-size: {BLURB_FONT_SIZE};">{project['blurb']}</p>   
+                <h3 style="font-family: {TITLE_FONT_FAMILY}; color: {TITLE_COLOR}; font-size: {TITLE_FONT_SIZE}; margin-bottom: 10px;">{project['title']}</h3>
+                <p style="font-family: {BLURB_FONT_FAMILY}; color: {BLURB_COLOR}; font-size: {BLURB_FONT_SIZE}; line-height: 1.8;">{project['blurb']}</p>
             </div>
         </div>
         """
 
         page.set_content(html_template, wait_until="load")
 
-        # **THE FIX**: Locate the card by its ID and screenshot just that element.
         page.locator("#card").screenshot(
             path=f"{IMAGE_OUTPUT_DIR}/{image_filename}", omit_background=True
         )
 
-        card_markdown = f'<a href="{project["url"]}" target="_blank"><img src="{IMAGE_OUTPUT_DIR}/{image_filename}" alt="{project["title"]}" width="{DISPLAY_WIDTH}"></a>'
-        all_cards_markdown += card_markdown + " "
+        # UPDATED: Added style="margin: 15px;" to the img tag
+        card_markdown = f'<a href="{project["url"]}" target="_blank"><img src="{IMAGE_OUTPUT_DIR}/{image_filename}" alt="{project["title"]}" width="{DISPLAY_WIDTH}" style="margin: 15px;"></a>'
+        all_cards_markdown += card_markdown
         print(f"  -> Generated {image_filename}")
 
     browser.close()
 
-final_markdown = f'<p align="center">\n{all_cards_markdown.strip()}\n</p>'
+# Note: The .strip() is removed and we add a newline to the markdown to help with wrapping
+final_markdown = f'<p align="center">\n{all_cards_markdown}\n</p>'
 
-# --- Read and inject into README (using safe placeholders is recommended) ---
-# This part assumes you've added ...to your README
+# --- Read and inject into README ---
 with open(README_PATH, "r", encoding="utf-8") as f:
     readme_content = f.read()
 
-replacement_block = f"\n{final_markdown}\n"
+replacement_block = f"{START_MARKER}\n{final_markdown}\n{END_MARKER}"
 
 new_readme_content, num_replacements = re.subn(
-    r"(?s).*", replacement_block, readme_content
+    BLOCK_PATTERN, replacement_block, readme_content
 )
 
 if num_replacements > 0:
@@ -93,4 +99,6 @@ if num_replacements > 0:
         f.write(new_readme_content)
     print("✅ README updated successfully!")
 else:
-    print("⚠️  Could not find portfolio placeholders in README.md. No changes made.")
+    print(
+        "⚠️  Could not find portfolio placeholders ...in README.md. No changes were made."
+    )
