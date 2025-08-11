@@ -4,7 +4,7 @@ import os
 from playwright.sync_api import sync_playwright
 
 # --- Configuration ---
-CARD_WIDTH = 300
+CARD_WIDTH = 350
 DISPLAY_WIDTH = 400
 CARD_HEIGHT = 550
 BADGES_PADDING = 30
