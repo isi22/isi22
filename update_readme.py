@@ -4,7 +4,7 @@ import os
 from playwright.sync_api import sync_playwright
 
 # --- Configuration ---
-CARD_WIDTH = 400
+CARD_WIDTH = 300
 DISPLAY_WIDTH = 400
 CARD_HEIGHT = 550
 BADGES_PADDING = 30
@@ -90,10 +90,10 @@ with sync_playwright() as p:
                     <a href="{project['url']}" target="_blank">
                         <img src="{project['thumbnail_url']}" alt="{project['title']}" style="width: 100%; border-radius: {CARD_BORDER_RADIUS}px {CARD_BORDER_RADIUS}px 0 0;">
                     </a>
-                    <div style="padding: {BADGES_PADDING}px {BADGES_PADDING}px 0 {BADGES_PADDING}px;">{badges_html}</div>
+                    <div style="padding: 5px {BADGES_PADDING}px 0 {BADGES_PADDING}px;">{badges_html}</div>
                     <div style="padding: 0 {BLURB_PADDING}px 0 {BLURB_PADDING}px;">
-                        <h3 style="font-family: {TITLE_FONT_FAMILY}; color: {title_color}; font-size: {TITLE_FONT_SIZE}; margin-bottom: 10px;">{project['title']}</h3>
-                        <p style="font-family: {BLURB_FONT_FAMILY}; color: {blurb_color}; font-size: {BLURB_FONT_SIZE}; line-height: 1.6;">{project['blurb']}</p>
+                        <h3 style="font-family: {TITLE_FONT_FAMILY}; color: {title_color}; font-size: {TITLE_FONT_SIZE}; margin-bottom: 0px;">{project['title']}</h3>
+                        <p style="font-family: {BLURB_FONT_FAMILY}; color: {blurb_color}; font-size: {BLURB_FONT_SIZE}; line-height: 1.6; text-align: justify;">{project['blurb']}</p>
                     </div>
                 </div>
             </body>
