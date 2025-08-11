@@ -21,12 +21,12 @@ BLURB_COLOR_LIGHT = "#57606a"
 BOX_SHADOW_LIGHT = "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"
 
 # Dark Theme
-CARD_BG_COLOR_DARK = "rgba(30,36,40, 1)"  # A dark grey
+CARD_BG_COLOR_DARK = "rgba(25,30,35, 1)"  # A dark grey
 TITLE_COLOR_DARK = "#f0f6fc"
 BLURB_COLOR_DARK = "#d3d7dc"
 # A subtle white "glow" for the dark mode shadow
 BOX_SHADOW_DARK = (
-    "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 10px 20px 0 rgba(255, 255, 255, 0.1);"
+    "0 4px 8px 0 rgba(255, 255, 255, 0.2), 0 6px 20px 0 rgba(255, 255, 255, 0.2);"
 )
 
 # --- Font Customization ---
