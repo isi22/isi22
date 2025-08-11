@@ -6,7 +6,7 @@ import textwrap
 # Adjust these values to change the appearance of your cards
 COLLAPSED_CARD_HEIGHT = "400px" # The strict height for the card BEFORE it's expanded
 IMAGE_FRAME_HEIGHT = "200px"    # Fixed height for the image container
-CARD_PADDING = "10px"
+CARD_PADDING = "0px"
 CARD_BORDER_RADIUS = "15px"
 CARD_BG_COLOR = "rgba(215, 215, 215, 0.2)" # Semi-transparent grey
 
