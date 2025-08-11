@@ -109,7 +109,14 @@ with sync_playwright() as p:
         light_img_url = f"{IMAGE_OUTPUT_DIR}/{safe_title}-light.png#gh-light-mode-only"
         dark_img_url = f"{IMAGE_OUTPUT_DIR}/{safe_title}-dark.png#gh-dark-mode-only"
 
-        card_markdown = f"""<a href="{project['url']}" target="_blank"><img src="{light_img_url}" alt="{project['title']}" width="{DISPLAY_WIDTH}";"></a><a href="{project['url']}" target="_blank"><img src="{dark_img_url}" alt="{project['title']}" width="{DISPLAY_WIDTH}" style="margin: 15px;"></a>"""
+        card_markdown = f"""
+<a href="{project['url']}" target="_blank">
+    <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="{dark_img_url}">
+        <source media="(prefers-color-scheme: light)" srcset="{light_img_url}">
+        <img src="{light_img_url}" alt="{project['title']}" width="{DISPLAY_WIDTH}" style="margin: 15px;">
+    </picture>
+</a>"""
         all_cards_markdown += card_markdown
 
     browser.close()
