@@ -9,42 +9,42 @@ Welcome to my GitHub profile! Below are some of the projects I've been working o
     <picture>
         <source media="(prefers-color-scheme: dark)" srcset="portfolio_cards/smartmonzotransactiontagsiosshortcutsifttt-dark.png#gh-dark-mode-only">
         <source media="(prefers-color-scheme: light)" srcset="portfolio_cards/smartmonzotransactiontagsiosshortcutsifttt-light.png#gh-light-mode-only">
-        <img src="portfolio_cards/smartmonzotransactiontagsiosshortcutsifttt-light.png#gh-light-mode-only" alt="🏷️ Smart Monzo Transaction Tags (iOS Shortcuts & IFTTT)" width="400" style="margin: 15px;">
+        <img src="portfolio_cards/smartmonzotransactiontagsiosshortcutsifttt-light.png#gh-light-mode-only" alt="🏷️ Smart Monzo Transaction Tags (iOS Shortcuts & IFTTT)" width="300" style="margin: 15px;">
     </picture>
 </a>
 <a href="https://github.com/isi22/Tube-Departure-Board/blob/main/README.md" target="_blank">
     <picture>
         <source media="(prefers-color-scheme: dark)" srcset="portfolio_cards/tubedepartureboardforraspberrypi-dark.png#gh-dark-mode-only">
         <source media="(prefers-color-scheme: light)" srcset="portfolio_cards/tubedepartureboardforraspberrypi-light.png#gh-light-mode-only">
-        <img src="portfolio_cards/tubedepartureboardforraspberrypi-light.png#gh-light-mode-only" alt="🚇 Tube Departure Board for Raspberry Pi" width="400" style="margin: 15px;">
+        <img src="portfolio_cards/tubedepartureboardforraspberrypi-light.png#gh-light-mode-only" alt="🚇 Tube Departure Board for Raspberry Pi" width="300" style="margin: 15px;">
     </picture>
 </a>
 <a href="https://nbviewer.org/github/isi22/IBM_AI_Engineering_Professional_Certificate/blob/main/Crack_Detection.ipynb" target="_blank">
     <picture>
         <source media="(prefers-color-scheme: dark)" srcset="portfolio_cards/crackdetection-dark.png#gh-dark-mode-only">
         <source media="(prefers-color-scheme: light)" srcset="portfolio_cards/crackdetection-light.png#gh-light-mode-only">
-        <img src="portfolio_cards/crackdetection-light.png#gh-light-mode-only" alt="Crack Detection" width="400" style="margin: 15px;">
+        <img src="portfolio_cards/crackdetection-light.png#gh-light-mode-only" alt="Crack Detection" width="300" style="margin: 15px;">
     </picture>
 </a>
 <a href="https://nbviewer.org/github/isi22/IBM_AI_Engineering_Professional_Certificate/blob/main/LangChain_QA_Bot.ipynb" target="_blank">
     <picture>
         <source media="(prefers-color-scheme: dark)" srcset="portfolio_cards/qabottoanswerquestionsfromloadeddocuments-dark.png#gh-dark-mode-only">
         <source media="(prefers-color-scheme: light)" srcset="portfolio_cards/qabottoanswerquestionsfromloadeddocuments-light.png#gh-light-mode-only">
-        <img src="portfolio_cards/qabottoanswerquestionsfromloadeddocuments-light.png#gh-light-mode-only" alt="QA Bot to Answer Questions from Loaded Documents" width="400" style="margin: 15px;">
+        <img src="portfolio_cards/qabottoanswerquestionsfromloadeddocuments-light.png#gh-light-mode-only" alt="QA Bot to Answer Questions from Loaded Documents" width="300" style="margin: 15px;">
     </picture>
 </a>
 <a href="https://nbviewer.org/github/isi22/IBM_AI_Engineering_Professional_Certificate/blob/main/Titanic_Survival_Prediction.ipynb" target="_blank">
     <picture>
         <source media="(prefers-color-scheme: dark)" srcset="portfolio_cards/titanicsurvivalprediction-dark.png#gh-dark-mode-only">
         <source media="(prefers-color-scheme: light)" srcset="portfolio_cards/titanicsurvivalprediction-light.png#gh-light-mode-only">
-        <img src="portfolio_cards/titanicsurvivalprediction-light.png#gh-light-mode-only" alt="Titanic Survival Prediction" width="400" style="margin: 15px;">
+        <img src="portfolio_cards/titanicsurvivalprediction-light.png#gh-light-mode-only" alt="Titanic Survival Prediction" width="300" style="margin: 15px;">
     </picture>
 </a>
 <a href="https://nbviewer.org/github/isi22/IBM_AI_Engineering_Professional_Certificate/blob/main/Waste_Classification.ipynb" target="_blank">
     <picture>
         <source media="(prefers-color-scheme: dark)" srcset="portfolio_cards/wasteclassification-dark.png#gh-dark-mode-only">
         <source media="(prefers-color-scheme: light)" srcset="portfolio_cards/wasteclassification-light.png#gh-light-mode-only">
-        <img src="portfolio_cards/wasteclassification-light.png#gh-light-mode-only" alt="Waste Classification" width="400" style="margin: 15px;">
+        <img src="portfolio_cards/wasteclassification-light.png#gh-light-mode-only" alt="Waste Classification" width="300" style="margin: 15px;">
     </picture>
 </a>
 </p>
