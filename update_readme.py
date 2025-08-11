@@ -5,7 +5,7 @@ from playwright.sync_api import sync_playwright
 
 # --- Configuration ---
 CARD_WIDTH = 400
-DISPLAY_WIDTH = 300
+DISPLAY_WIDTH = 400
 CARD_HEIGHT = 550
 BADGES_PADDING = 15
 CARD_BORDER_RADIUS = 15
@@ -23,7 +23,7 @@ BOX_SHADOW_LIGHT = "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0
 # Dark Theme
 CARD_BG_COLOR_DARK = "rgba(30,36,40, 1)"  # A dark grey
 TITLE_COLOR_DARK = "#f0f6fc"
-BLURB_COLOR_DARK = "#8b949e"
+BLURB_COLOR_DARK = "#b7bbc0"
 # A subtle white "glow" for the dark mode shadow
 BOX_SHADOW_DARK = (
     "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(255, 255, 255, 0.1);"
