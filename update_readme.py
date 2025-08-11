@@ -26,7 +26,7 @@ TITLE_COLOR_DARK = "#f0f6fc"
 BLURB_COLOR_DARK = "#d3d7dc"
 # A subtle white "glow" for the dark mode shadow
 BOX_SHADOW_DARK = (
-    "0 4px 8px 0 rgba(255, 255, 255, 1), 0 6px 20px 0 rgba(255, 255, 255, 1);"
+    "0 4px 8px 0 rgba(255, 255, 255, 0.8), 0 6px 20px 0 rgba(255, 255, 255, 0.8);"
 )
 
 # --- Font Customization ---
