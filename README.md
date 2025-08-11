@@ -3,7 +3,7 @@
 ### 🏷️ Smart Monzo Transaction Tags (iOS Shortcuts & IFTTT)
 
 <a href="https://github.com/isi22/Monzo-Apple-Shortcut/blob/main/README.md" target="_blank">
-  <img src="https://raw.githubusercontent.com/isi22/Monzo-Apple-Shortcut/main/Images/thumbnail.jpg" alt="🏷️ Smart Monzo Transaction Tags (iOS Shortcuts & IFTTT)" width="400">
+  <img src="https://raw.githubusercontent.com/isi22/Monzo-Apple-Shortcut/main/Images/thumbnail.png" alt="🏷️ Smart Monzo Transaction Tags (iOS Shortcuts & IFTTT)" width="400">
 </a>
 
 Automate your Monzo spending! This project uses IFTTT and iOS Shortcuts to immediately prompt you to categorise transactions via an easy interface, adding smart, searchable tags for effortless shared expense tracking and personal categorisation.
@@ -112,7 +112,7 @@ This analysis constructs a binary classification model to categorise waste produ
 ### 🏷️ Smart Monzo Transaction Tags (iOS Shortcuts & IFTTT)
 
 <a href="https://github.com/isi22/Monzo-Apple-Shortcut/blob/main/README.md" target="_blank">
-  <img src="https://raw.githubusercontent.com/isi22/Monzo-Apple-Shortcut/main/Images/thumbnail.jpg" alt="🏷️ Smart Monzo Transaction Tags (iOS Shortcuts & IFTTT)" width="400">
+  <img src="https://raw.githubusercontent.com/isi22/Monzo-Apple-Shortcut/main/Images/thumbnail.png" alt="🏷️ Smart Monzo Transaction Tags (iOS Shortcuts & IFTTT)" width="400">
 </a>
 
 Automate your Monzo spending! This project uses IFTTT and iOS Shortcuts to immediately prompt you to categorise transactions via an easy interface, adding smart, searchable tags for effortless shared expense tracking and personal categorisation.
