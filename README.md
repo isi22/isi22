@@ -19,6 +19,13 @@ Welcome to my GitHub profile! Below are some of the projects I've been working o
         <img src="portfolio_cards/tubedepartureboardforraspberrypi-light.png#gh-light-mode-only" alt="🚇 Tube Departure Board for Raspberry Pi" width="275" style="margin: 15px;">
     </picture>
 </a>
+<a href="https://nbviewer.org/github/isi22/Cheat_Sheets/blob/main/CS_HuggingFace.ipynb" target="_blank">
+    <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="portfolio_cards/huggingfacecheatsheet-dark.png#gh-dark-mode-only">
+        <source media="(prefers-color-scheme: light)" srcset="portfolio_cards/huggingfacecheatsheet-light.png#gh-light-mode-only">
+        <img src="portfolio_cards/huggingfacecheatsheet-light.png#gh-light-mode-only" alt="Hugging Face Cheat Sheet" width="275" style="margin: 15px;">
+    </picture>
+</a>
 <a href="https://nbviewer.org/github/isi22/Cheat_Sheets/blob/main/CS_PyTorch.ipynb" target="_blank">
     <picture>
         <source media="(prefers-color-scheme: dark)" srcset="portfolio_cards/pytorchcheatsheet-dark.png#gh-dark-mode-only">
