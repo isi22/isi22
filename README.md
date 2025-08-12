@@ -5,18 +5,18 @@ Welcome to my GitHub profile! Below are some of the projects I've been working o
 <!-- Start of Project Grid -->
 <p align="center">
 
-<a href="https://github.com/isi22/Monzo-Apple-Shortcut/blob/main/README.md" target="_blank">
+<a href="https://github.com/isi22/Monzo-Apple-Shortcut" target="_blank">
     <picture>
         <source media="(prefers-color-scheme: dark)" srcset="portfolio_cards/smartmonzotransactiontagsiosshortcutsifttt-dark.png#gh-dark-mode-only">
         <source media="(prefers-color-scheme: light)" srcset="portfolio_cards/smartmonzotransactiontagsiosshortcutsifttt-light.png#gh-light-mode-only">
-        <img src="portfolio_cards/smartmonzotransactiontagsiosshortcutsifttt-light.png#gh-light-mode-only" alt="🏷️ Smart Monzo Transaction Tags (iOS Shortcuts & IFTTT)" width="275" style="margin: 15px;">
+        <img src="portfolio_cards/smartmonzotransactiontagsiosshortcutsifttt-light.png#gh-light-mode-only" alt=" Smart Monzo Transaction Tags (iOS Shortcuts & IFTTT)" width="275" style="margin: 15px;">
     </picture>
 </a>
-<a href="https://github.com/isi22/Tube-Departure-Board/blob/main/README.md" target="_blank">
+<a href="https://github.com/isi22/Tube-Departure-Board" target="_blank">
     <picture>
         <source media="(prefers-color-scheme: dark)" srcset="portfolio_cards/tubedepartureboardforraspberrypi-dark.png#gh-dark-mode-only">
         <source media="(prefers-color-scheme: light)" srcset="portfolio_cards/tubedepartureboardforraspberrypi-light.png#gh-light-mode-only">
-        <img src="portfolio_cards/tubedepartureboardforraspberrypi-light.png#gh-light-mode-only" alt="🚇 Tube Departure Board for Raspberry Pi" width="275" style="margin: 15px;">
+        <img src="portfolio_cards/tubedepartureboardforraspberrypi-light.png#gh-light-mode-only" alt=" Tube Departure Board for Raspberry Pi" width="275" style="margin: 15px;">
     </picture>
 </a>
 <a href="https://nbviewer.org/github/isi22/Cheat_Sheets/blob/main/CS_HuggingFace.ipynb" target="_blank">
