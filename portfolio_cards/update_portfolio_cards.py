@@ -38,7 +38,7 @@ BLURB_FONT_SIZE = "14px"
 
 # --- File Paths & Setup ---
 IMAGE_OUTPUT_DIR = "portfolio_cards"
-JSON_FILE_PATH = "projects.json"
+JSON_FILE_PATH = "portfolio_cards/projects.json"
 README_PATH = "README.md"
 os.makedirs(IMAGE_OUTPUT_DIR, exist_ok=True)
 

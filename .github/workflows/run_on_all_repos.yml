@@ -84,24 +84,56 @@ jobs:
           # Check if any artifact files were downloaded
           if [ -z "$(ls -A ./project-artifacts)" ]; then
             echo "No project artifacts found. Resulting file will be empty."
-            echo "[]" > projects.json
+            echo "[]" > portfolio_cards/projects.json
           else
             # Use jq to merge all JSON files into a single array
-            jq -s 'add | unique_by(.url)' ./project-artifacts/**/*.json > projects.json
+            jq -s 'add | unique_by(.url)' ./project-artifacts/**/*.json > portfolio_cards/projects.json
           fi
           
           echo "Aggregation complete. Final project data:"
-          cat projects.json
+          cat portfolio_cards/projects.json
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+        
+      - name: Cache Playwright browsers
+        id: cache-playwright
+        uses: actions/cache@v4
+        with:
+          # This is the directory where Playwright stores its binaries
+          path: ~/.cache/ms-playwright
+          # The key identifies the cache. It includes the OS and a hash of your requirements file.
+          # If requirements.txt changes, a new cache is created.
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/requirements.txt') }}
+          # A fallback key if the exact key isn't found
+          restore-keys: |
+            ${{ runner.os }}-playwright-
+
+      - name: Install Python dependencies and Playwright browsers
+        run: |
+          python -m pip install --upgrade pip
+          pip install playwright
+
+      - name: Install Playwright browsers (if cache missed)
+        # This step only runs if the cache was not restored in the previous step
+        if: steps.cache-playwright.outputs.cache-hit != 'true'
+        run: playwright install
+
+      - name: Run script to update portfolio cards
+        run: python portfolio_cards/update_portfolio_cards.py
 
 
       - name: Commit and Push aggregated file
         run: |
           git config --global user.name 'github-actions[bot]'
           git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-          git add projects.json
+          git add portfolio_cards/
+          git add README.md
           # Check if there are any changes to commit
           if git diff --staged --quiet; then
-            echo "No changes to commit in projects.json."
+            echo "No changes to commit in portfolio_cards/projects.json."
           else
             git commit -m "docs: update aggregated project data"
             echo "Pushing changes to isi22..."
