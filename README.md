@@ -33,6 +33,13 @@ Welcome to my GitHub profile! Below are some of the projects I've been working o
         <img src="portfolio_cards/kerascheatsheet-light.png#gh-light-mode-only" alt="Keras Cheat Sheet" width="275" style="margin: 15px;">
     </picture>
 </a>
+<a href="https://nbviewer.org/github/isi22/Cheat_Sheets/blob/main/CS_LangChain.ipynb" target="_blank">
+    <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="portfolio_cards/llmwithlangchaincheatsheet-dark.png#gh-dark-mode-only">
+        <source media="(prefers-color-scheme: light)" srcset="portfolio_cards/llmwithlangchaincheatsheet-light.png#gh-light-mode-only">
+        <img src="portfolio_cards/llmwithlangchaincheatsheet-light.png#gh-light-mode-only" alt="LLM with LangChain Cheat Sheet" width="275" style="margin: 15px;">
+    </picture>
+</a>
 <a href="https://nbviewer.org/github/isi22/Cheat_Sheets/blob/main/CS_PyTorch.ipynb" target="_blank">
     <picture>
         <source media="(prefers-color-scheme: dark)" srcset="portfolio_cards/pytorchcheatsheet-dark.png#gh-dark-mode-only">
