@@ -12,6 +12,13 @@ Welcome to my GitHub profile! Below are some of the projects I've been working o
         <img src="portfolio_cards/smartmonzotransactiontagsiosshortcutsifttt-light.png#gh-light-mode-only" alt=" Smart Monzo Transaction Tags (iOS Shortcuts & IFTTT)" width="275" style="margin: 15px;">
     </picture>
 </a>
+<a href="https://github.com/isi22/Surgical-Segmentation-Challenge" target="_blank">
+    <picture>
+        <source media="(prefers-color-scheme: dark)" srcset="portfolio_cards/surgicaltoolsegmentation-dark.png#gh-dark-mode-only">
+        <source media="(prefers-color-scheme: light)" srcset="portfolio_cards/surgicaltoolsegmentation-light.png#gh-light-mode-only">
+        <img src="portfolio_cards/surgicaltoolsegmentation-light.png#gh-light-mode-only" alt="Surgical Tool Segmentation" width="275" style="margin: 15px;">
+    </picture>
+</a>
 <a href="https://github.com/isi22/Tube-Departure-Board" target="_blank">
     <picture>
         <source media="(prefers-color-scheme: dark)" srcset="portfolio_cards/tubedepartureboardforraspberrypi-dark.png#gh-dark-mode-only">
